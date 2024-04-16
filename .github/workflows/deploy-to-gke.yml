@@ -67,3 +67,37 @@ jobs:
       run: |
         kubectl apply -f hello-world-deployment.yaml
         kubectl apply -f hello-world-service.yaml
+
+  name: 'Destroy GKE Infrastructure'
+
+  on: 
+  workflow_dispatch:
+
+  jobs:
+    destroy-gke:
+      name: 'Destroy Infrastructure'
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      
+      - name: 'Set up Cloud SDK'
+        uses: google-github-actions/setup-gcloud@master
+
+      - name: 'Set up Terraform'
+        run: |
+          echo '${{ secrets.GCP_SA_KEY }}' > google-credentials.json
+          gcloud auth activate-service-account --key-file=google-credentials.json
+          terraform init
+        env:
+          GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+      - name: 'Terraform Destroy'
+        run: |
+          terraform destroy -auto-approve
+        env:
+          GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}      
+  
