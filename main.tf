@@ -1,3 +1,12 @@
+terraform {
+  backend "gcs" {
+    bucket = "backend_state"
+    prefix = "terraform/state"
+  }
+}
+
+
+
 
 resource "google_compute_network" "pre_sales_vpc" {
   name                    = "pre-sales-vpc"
