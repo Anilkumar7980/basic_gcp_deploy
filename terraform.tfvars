@@ -1,0 +1,2 @@
+dbuser = "postgresqluser"
+dbpassword = "postgresql"
