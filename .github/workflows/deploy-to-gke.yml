@@ -61,7 +61,7 @@ jobs:
 
     - name: 'Get GKE credentials'
       run: |
-        gcloud container clusters get-credentials auto-pilot-cluster --region asia-south1 --project ${{ secrets.GCP_PROJECT }}
+        gcloud container clusters get-credentials auto-private-cluster --region asia-south1 --project ${{ secrets.GCP_PROJECT }}
 
     - name: 'Deploy to GKE'
       run: |
