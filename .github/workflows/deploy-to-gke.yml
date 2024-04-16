@@ -22,7 +22,8 @@ jobs:
 
     - name: 'Set up Terraform'
       run: |
-        echo "${{ secrets.GCP_SA_KEY }}" > google-credentials.json
+        echo '${{ secrets.GCP_SA_KEY }}' > google-credentials.json
+        cat google-credentials.json  # Optional: for debugging to check if file is correct
         terraform init
       env:
         GOOGLE_APPLICATION_CREDENTIALS: google-credentials.json
