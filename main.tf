@@ -9,6 +9,7 @@ resource "google_compute_network" "pre_sales_vpc" {
 
 
 
+
 resource "google_compute_subnetwork" "public_subnet" {
   name                     = "public-subnet"
   ip_cidr_range            = "10.0.1.0/24"
