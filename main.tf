@@ -1,3 +1,10 @@
+terraform {
+  backend "gcs" {
+    bucket  = "your-terraform-state-bucket"
+    prefix  = "terraform/state"
+    credentials = "google-credentials.json"
+  }
+}
 
 
 
