@@ -38,7 +38,10 @@ jobs:
         GOOGLE_APPLICATION_CREDENTIALS: google-credentials.json
 
     - name: 'Terraform Plan'
-      run: terraform plan
+      run: |
+        echo '${{ secrets.GCP_SA_KEY }}' > google-credentials.json
+        cat google-credentials.json  # Optional: for debugging to check if file is correct
+        terraform plan
 
     - name: 'Terraform Apply'
       run: terraform apply -auto-approve
