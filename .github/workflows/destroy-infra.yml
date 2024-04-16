@@ -15,16 +15,20 @@ jobs:
     - name: 'Set up Cloud SDK'
       uses: google-github-actions/setup-gcloud@main
 
-    - name: 'Terraform Init'
+    - name: 'Prepare Google Credentials'
       run: |
-        terraform init
+        echo '${{ secrets.GCP_SA_KEY }}' > google-credentials.json
       env:
-        GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
         GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
-    - name: 'Terraform Destroy'
-      run: |
-        terraform destroy -auto-approve
+    - name: 'Terraform Init'
+      run: terraform init
       env:
+        GOOGLE_APPLICATION_CREDENTIALS: google-credentials.json
         GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
-        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+    - name: 'Terraform Destroy'
+      run: terraform destroy -auto-approve
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: google-credentials.json
+        GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
