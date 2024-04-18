@@ -17,8 +17,11 @@ jobs:
 
     - name: 'Authenticate GCP'
       run: |
-        echo "${{ secrets.GCP_SA_KEY }}" > google-credentials.json
+        echo '${{ secrets.GCP_SA_KEY }}' > google-credentials.json
         gcloud auth activate-service-account --key-file=google-credentials.json
+  env:
+    GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
       env:
         GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
