@@ -29,22 +29,22 @@ jobs:
         gcloud config list
 
 
-    - name: 'Set up Terraform'
+    - name: 'Set up OpenTofu'
       run: |
         echo '${{ secrets.GCP_SA_KEY }}' > google-credentials.json
         cat google-credentials.json  # Optional: for debugging to check if file is correct
-        terraform init
+        tofu init
       env:
         GOOGLE_APPLICATION_CREDENTIALS: google-credentials.json
 
-    - name: 'Terraform Plan'
+    - name: 'tofu Plan'
       run: |
         echo '${{ secrets.GCP_SA_KEY }}' > google-credentials.json
         cat google-credentials.json  # Optional: for debugging to check if file is correct
-        terraform plan
+        tofu plan
 
-    - name: 'Terraform Apply'
-      run: terraform apply -auto-approve
+    - name: 'tofu Apply'
+      run: tofu apply -auto-approve
 
   deploy-to-gke:
     needs: setup-gke
@@ -64,11 +64,11 @@ jobs:
       run: gcloud auth list
 
         
-    - name: 'Set up Terraform'
+    - name: 'Set up OpenTofu'
       run: |
         echo '${{ secrets.GCP_SA_KEY }}' > google-credentials.json
         gcloud auth activate-service-account --key-file=google-credentials.json
-        terraform init
+        tofu init
 
     - name: 'Set up Cloud SDK and install gke-gcloud-auth-plugin'
       uses: google-github-actions/setup-gcloud@v0.2.0
