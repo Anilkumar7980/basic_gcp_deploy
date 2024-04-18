@@ -11,24 +11,34 @@ jobs:
     steps:
     - name: 'Checkout'
       uses: actions/checkout@v2
-      
-    - name: 'Set up Cloud SDK'
-      uses: google-github-actions/setup-gcloud@main
 
-    - name: 'Prepare Google Credentials'
+    - name: 'Setup Google Cloud SDK'
+      uses: google-github-actions/setup-gcloud@v0.2.0  # Use a specific version for stability
+
+    - name: 'Authenticate GCP'
       run: |
-        echo '${{ secrets.GCP_SA_KEY }}' > google-credentials.json
+        echo "${{ secrets.GCP_SA_KEY }}" > google-credentials.json
+        gcloud auth activate-service-account --key-file=google-credentials.json
       env:
         GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+    - name: 'Setup Terraform'
+      uses: hashicorp/setup-terraform@v1
+      # No version specified; will use the latest version supported by this action
 
     - name: 'Terraform Init'
       run: terraform init
       env:
         GOOGLE_APPLICATION_CREDENTIALS: google-credentials.json
-        GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+
+    - name: 'Terraform Plan Destroy'
+      run: terraform plan -destroy
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: google-credentials.json
 
     - name: 'Terraform Destroy'
       run: terraform destroy -auto-approve
       env:
         GOOGLE_APPLICATION_CREDENTIALS: google-credentials.json
-        GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+
+    
