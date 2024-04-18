@@ -26,7 +26,7 @@ jobs:
         GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
     - name: 'Setup tofu'
-      uses: hashicorp/setup-opentofu@v1
+      uses: linuxfound/setup-opentofu@v1
       # No version specified; will use the latest version supported by this action
 
     - name: 'tofu Init'
