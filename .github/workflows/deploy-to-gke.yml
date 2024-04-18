@@ -69,6 +69,16 @@ jobs:
         echo '${{ secrets.GCP_SA_KEY }}' > google-credentials.json
         gcloud auth activate-service-account --key-file=google-credentials.json
         terraform init
+
+    - name: 'Set up Cloud SDK and install gke-gcloud-auth-plugin'
+      uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+        project_id: ${{ secrets.GCP_PROJECT }}
+      
+    - name: 'Install gke-gcloud-auth-plugin'
+      run: gcloud components install gke-gcloud-auth-plugin -q
     
 
     - name: 'Get GKE credentials'
