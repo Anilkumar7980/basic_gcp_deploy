@@ -25,22 +25,22 @@ jobs:
       env:
         GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
-    - name: 'Setup Terraform'
-      uses: hashicorp/setup-terraform@v1
+    - name: 'Setup tofu'
+      uses: hashicorp/setup-opentofu@v1
       # No version specified; will use the latest version supported by this action
 
-    - name: 'Terraform Init'
-      run: terraform init
+    - name: 'tofu Init'
+      run: tofu init
       env:
         GOOGLE_APPLICATION_CREDENTIALS: google-credentials.json
 
-    - name: 'Terraform Plan Destroy'
-      run: terraform plan -destroy
+    - name: 'tofu Plan Destroy'
+      run: tofu plan -destroy
       env:
         GOOGLE_APPLICATION_CREDENTIALS: google-credentials.json
 
-    - name: 'Terraform Destroy'
-      run: terraform destroy -auto-approve
+    - name: 'Tofu Destroy'
+      run: tofu destroy -auto-approve
       env:
         GOOGLE_APPLICATION_CREDENTIALS: google-credentials.json
 
